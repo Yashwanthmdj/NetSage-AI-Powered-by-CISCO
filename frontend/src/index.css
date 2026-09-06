@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #080c14;
+  color: #e8eef8;
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(62, 207, 196, 0.28);
+  color: #e8eef8;
+}
+
+:focus-visible {
+  outline: 1px solid rgba(62, 207, 196, 0.7);
+  outline-offset: 2px;
+}
+
+.evidence {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  white-space: pre-wrap;
+  tab-size: 2;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #243044;
+  border-radius: 999px;
+}
