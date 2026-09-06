@@ -219,7 +219,36 @@ npm run dev -- --host 127.0.0.1 --port 5173
 
 If 5173 is busy, Vite moves to **5174**. CORS already allows `http://(localhost|127.0.0.1):517x`.
 
-### 3. Tests and build
+### 3. Production (frontend + backend together)
+
+The production image builds the React app and serves it from FastAPI on one port. The UI calls `/api/v1` on the same origin, so the LLM key never enters the browser bundle.
+
+**Local production image**
+
+```bash
+# from the repo root — uses backend/.env for the LLM key, never copies it into the image
+docker compose up --build
+```
+
+Then open [http://127.0.0.1:8080](http://127.0.0.1:8080) and [http://127.0.0.1:8080/api/v1/health](http://127.0.0.1:8080/api/v1/health).
+
+**Render (public URL)**
+
+1. Push this repo to GitHub (already done if you use `NetSage-AI-Powered-by-CISCO`).
+2. In [Render](https://dashboard.render.com) → **New** → **Blueprint**. Select the repo. It reads `render.yaml`.
+3. Set the secret env vars (do not commit them):
+
+   | Variable | Example |
+   |---|---|
+   | `LLM_API_KEY` | your provider key |
+   | `LLM_BASE_URL` | `https://integrate.api.nvidia.com/v1` |
+   | `LLM_MODEL` | your model id |
+
+4. Deploy. The public site is the UI; `/api/v1/health` is the API check.
+
+A free Render instance has an ephemeral disk. The 36-case catalog re-seeds on boot. Diagnoses and reviews will not survive a redeploy unless you attach a persistent disk and keep `DATABASE_URL=sqlite:////var/data/netsage.db`.
+
+### 4. Tests and build
 
 ```bash
 # Backend — from backend/
@@ -249,6 +278,7 @@ npm run build                      # tsc --noEmit && vite build
 | `LLM_JSON_OBJECT` | `true` only if the provider accepts `response_format: json_object` |
 | `LLM_ENABLE_THINKING` | Leave `false` unless you need a thinking model |
 | `AUTO_SEED` | Upsert catalog on boot |
+| `SERVE_FRONTEND` | `true` in production so FastAPI serves `frontend/dist` |
 | `CORS_ORIGINS` | Extra explicit origins; a `:517x` regex is also enabled |
 | `PROMPTS_DIR` | Defaults to `../prompts` |
 

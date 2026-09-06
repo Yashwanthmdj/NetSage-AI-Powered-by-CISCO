@@ -10,6 +10,7 @@ from app.db.session import init_db, session_scope
 from app.exceptions import register_exception_handlers
 from app.services.seed import seed_catalog
 from app.services.users import seed_default_reviewer
+from app.spa import mount_frontend
 
 
 @asynccontextmanager
@@ -44,6 +45,7 @@ def create_app() -> FastAPI:
     register_exception_handlers(app)
     app.include_router(health.router)
     app.include_router(api_router, prefix=settings.api_prefix)
+    mount_frontend(app, settings)
     return app
 
 

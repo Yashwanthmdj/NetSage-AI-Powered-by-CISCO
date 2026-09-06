@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     )
     cases_csv_path: Path = REPO_ROOT / "data" / "cases.csv"
     auto_seed: bool = True
+    serve_frontend: bool = False
+    frontend_dist: Path = REPO_ROOT / "frontend" / "dist"
     llm_base_url: str = "https://api.openai.com/v1"
     llm_api_key: str = ""
     llm_model: str = "gpt-4o-mini"

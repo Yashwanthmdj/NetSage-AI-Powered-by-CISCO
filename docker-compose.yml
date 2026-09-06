@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8000"
+    env_file:
+      - backend/.env
+    environment:
+      SERVE_FRONTEND: "true"
+      AUTO_SEED: "true"
+      DATABASE_URL: sqlite:////data/netsage.db
+      PYTHONPATH: /app/backend
+    volumes:
+      - netsage-data:/data
+
+volumes:
+  netsage-data:

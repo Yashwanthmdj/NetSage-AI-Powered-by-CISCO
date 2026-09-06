@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: netsage-ai
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: SERVE_FRONTEND
+        value: "true"
+      - key: AUTO_SEED
+        value: "true"
+      - key: DATABASE_URL
+        value: sqlite:////var/data/netsage.db
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_BASE_URL
+        sync: false
+      - key: LLM_MODEL
+        sync: false
+      - key: LLM_JSON_OBJECT
+        value: "false"
+      - key: LLM_TIMEOUT_SECONDS
+        value: "180"
+      - key: LLM_MAX_TOKENS
+        value: "4096"
+      - key: LLM_ENABLE_THINKING
+        value: "false"
